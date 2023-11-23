@@ -12,6 +12,8 @@ use unit::Unit;
 use serde::{Deserialize, Serialize};
 use serde_json::{from_str, to_string};
 
+include!(concat!(env!("OUT_DIR"), "/generated_units.rs"));
+
 #[derive(Serialize, Deserialize, Debug)]
 struct Dog {
     name: String,
@@ -52,10 +54,11 @@ fn deserialize() {
     }
 }
 
-fn main() {
-    let mut u_kaballite_warriors: Vec<Model> = drukhari_kabalite_warriors_fjson();
 
-    let mut u_intercessor_squad: Vec<Model> = sm_intercessor_squad(5);
+fn main() {
+    let mut u_kaballite_warriors: Vec<Model> = drukhari_kabalite_warriors_json();
+
+    let mut u_intercessor_squad: Vec<Model> = intercessor_squad_json(8);
 
     // for model in &u_intercessor_squad {
     //     println!("{}", model.description());
@@ -66,14 +69,14 @@ fn main() {
 
     let mut u_kaballite_warriors_2: Unit = Unit::new(
         "Kabalite Warriors".to_string(),
-        drukhari_kabalite_warriors(),
-        arsenal_kabalite_warrior(),
+        drukhari_kabalite_warriors_json(),
+        build_arsenal_from_json(),
     );
 
     let mut u_intercessor_squad_2 = Unit::new(
         "Intercessor Squad".to_string(),
-        sm_intercessor_squad(5),
-        arsenal_kabalite_warrior(),
+        intercessor_squad_json(6),
+        build_arsenal_from_json(),
     );
 
     u_kaballite_warriors_2.description();
