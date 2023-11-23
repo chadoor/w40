@@ -9,8 +9,51 @@ use crate::unit_builder::*;
 use model::Model;
 use unit::Unit;
 
+use serde::{Deserialize, Serialize};
+use serde_json::{from_str, to_string};
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Dog {
+    name: String,
+    year_born: i32,
+    owner: DogOwner,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct DogOwner {
+    first_name: String,
+    last_name: String,
+}
+
+fn example() {
+    let owner_01 = DogOwner {
+        first_name: "Trevor".to_string(),
+        last_name: "Sullivan".to_string(),
+    };
+
+    let dog_01: Dog = Dog {
+        name: "Cheyenne".to_string(),
+        year_born: 2021,
+        owner: owner_01,
+    };
+    let result = to_string(&dog_01);
+    if let Ok(s) = result {
+        println!("{}", s);
+    } else {
+        println!("There was a problem with serilazation");
+    }
+}
+
+fn deserialize() {
+    let json_string = r#"{"name":"Cheyenne","year_born":2021,"owner":{"first_name":"Trevor","last_name":"Sullivan"}}"#;
+    let dog_deser = from_str::<Dog>(json_string);
+    if let Ok(s) = dog_deser {
+        println!("{:#?}", s);
+    }
+}
+
 fn main() {
-    let mut u_kaballite_warriors: Vec<Model> = drukhari_kabalite_warriors();
+    let mut u_kaballite_warriors: Vec<Model> = drukhari_kabalite_warriors_fjson();
 
     let mut u_intercessor_squad: Vec<Model> = sm_intercessor_squad(5);
 
@@ -36,7 +79,7 @@ fn main() {
     u_kaballite_warriors_2.description();
     u_intercessor_squad_2.description();
 
-    unit_combat(&u_kaballite_warriors_2, &u_intercessor_squad_2);
+    //unit_combat(&u_kaballite_warriors_2, &u_intercessor_squad_2);
 
     // let var = u_intercessor_squad_2.get_models();
 
@@ -55,4 +98,10 @@ fn main() {
     // }
 
     // combat(&kaballite_warrior_1, &mut kaballite_warrior_2);
+
+    //example();
+
+    //deserialize();
+
+    //build_arsenal_from_json();
 }

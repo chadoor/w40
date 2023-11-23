@@ -1,5 +1,8 @@
 use crate::weapon::Weapon;
 
+use serde::{Deserialize, Serialize};
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct Model {
     name: String,
     toughness: i32,
@@ -11,13 +14,13 @@ pub struct Model {
 }
 
 impl Model {
-    pub fn new(name: String, toughness: i32, a_save: i32, wounds: i32, weapon: Weapon) -> Model {
+    pub fn new(name: String, toughness: i32, a_save: i32, wounds: i32) -> Model {
         Model {
             name,
             toughness,
             a_save,
             wounds,
-            weapons: vec![weapon],
+            weapons: vec![],
             i_save: 10,
             keywords: vec![],
         }

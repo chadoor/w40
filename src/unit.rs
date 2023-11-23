@@ -67,7 +67,6 @@ impl Unit {
                     model.get_toughness(),
                     model.get_a_save(),
                     model.get_wounds(),
-                    Weapon::new("Dark Lance".to_string(), 1, 4, 12, -3, 2, 6, vec![Ability::HEAVY]),
                 );
                 dummy.set_i_save(model.get_i_save());
                 dummy.add_keyword_vr(model.get_keywords());

@@ -1,7 +1,8 @@
-use std::collections::HashMap;
-
 use rand::Rng;
 
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Ability {
     ANTI(String, u8),
     ASSAULT,
@@ -10,6 +11,7 @@ pub enum Ability {
     NONE,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Weapon {
     name: String,
     n_attacks: i32,
