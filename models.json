@@ -1,108 +1,112 @@
 
 {
-    "Kaballite_Warriors":[
-        {
-            "name": "Kaballite Warior",
-            "toughness" : 3,
-            "a_save": 4,
-            "i_save": 6,
-            "wounds": 1,
-            "weapons": [
-              {
-                "name": "Splinter rifle",
-                "n_attacks": 2,
-                "b_skill": 3,
-                "strength": 2,
-                "ap": 0,
-                "damage": 1,
-                "damage_die": 0,
-                "abilities": ["ASSAULT", {"ANTI":["Infantry",3]}]
+  "kaballite_warriors":[
+      {
+          "name": "Kaballite Warior",
+          "toughness" : 3,
+          "a_save": 4,
+          "i_save": 6,
+          "wounds": 1,
+          "weapons": [
+            {
+              "name": "Splinter rifle",
+              "n_attacks": 2,
+              "b_skill": 3,
+              "strength": 2,
+              "ap": 0,
+              "damage": 1,
+              "damage_die": 0,
+              "abilities": ["ASSAULT", {"ANTI":["Infantry",3]}]
+          }  
+          ],
+          "keywords": ["Infantry","Kabal","Battleline","Aeldari","Kabalite Warriors"],
+          "count": 9
+      },
+      {
+          "name": "Sybarite",
+          "toughness" : 3,
+          "a_save": 4,
+          "i_save": 6,
+          "wounds": 1,
+          "weapons": [
+            {
+              "name": "Splinter rifle",
+              "n_attacks": 2,
+              "b_skill": 3,
+              "strength": 2,
+              "ap": 0,
+              "damage": 1,
+              "damage_die": 0,
+              "abilities": ["ASSAULT", {"ANTI":["Infantry",3]}]
+          }  
+          ],
+          "keywords": ["Infantry","Kabal","Battleline","Aeldari","Kabalite Warriors"],
+          "count": 1
+      }
+  
+  ],
+  "intercessor_squad" : [
+      {
+          "name": "Intercessor",
+          "toughness" : 4,
+          "a_save": 3,
+          "i_save": 10,
+          "wounds": 2,
+          "weapons": [
+            {
+              "name": "Bolt Pistol",
+              "n_attacks": 1,
+              "b_skill": 3,
+              "strength": 4,
+              "ap": 0,
+              "damage": 1,
+              "damage_die": 0,
+              "abilities": ["PISTOL"]
+            },
+            {
+              "name": "Bolt Rifle",
+              "n_attacks": 2,
+              "b_skill": 3,
+              "strength": 4,
+              "ap": -1,
+              "damage": 1,
+              "damage_die": 0,
+              "abilities": ["ASSAULT","HEAVY"]
             }  
-            ],
-            "keywords": ["Infantry","Kabal","Battleline","Aeldari","Kabalite Warriors"]
-        },
-        {
-            "name": "Sybarite",
-            "toughness" : 3,
-            "a_save": 4,
-            "i_save": 6,
-            "wounds": 1,
-            "weapons": [
-              {
-                "name": "Splinter rifle",
-                "n_attacks": 2,
-                "b_skill": 3,
-                "strength": 2,
-                "ap": 0,
-                "damage": 1,
-                "damage_die": 0,
-                "abilities": ["ASSAULT", {"ANTI":["Infantry",3]}]
+          ],
+          "keywords": ["Infantry","Grenades","Battleline","Imperium","Tacticus","Intercessor Squad"],
+          "count": 4
+      },
+      {
+          "name": "Intercessor Sergeant",
+          "toughness" : 4,
+          "a_save": 3,
+          "i_save": 10,
+          "wounds": 2,
+          "weapons": [
+            {
+              "name": "Bolt Pistol",
+              "n_attacks": 1,
+              "b_skill": 3,
+              "strength": 4,
+              "ap": 0,
+              "damage": 1,
+              "damage_die": 0,
+              "abilities": ["PISTOL"]
+            },
+            {
+              "name": "Bolt Rifle",
+              "n_attacks": 2,
+              "b_skill": 3,
+              "strength": 4,
+              "ap": -1,
+              "damage": 1,
+              "damage_die": 0,
+              "abilities": ["ASSAULT","HEAVY"]
             }  
-            ],
-            "keywords": ["Infantry","Kabal","Battleline","Aeldari","Kabalite Warriors"]
-        }
-    
-    ],
-    "Intercessor_Squad" : [
-        {
-            "name": "Intercessor",
-            "toughness" : 4,
-            "a_save": 3,
-            "i_save": 10,
-            "wounds": 2,
-            "weapons": [
-              {
-                "name": "Bolt Pistol",
-                "n_attacks": 1,
-                "b_skill": 3,
-                "strength": 4,
-                "ap": 0,
-                "damage": 1,
-                "damage_die": 0,
-                "abilities": ["PISTOL"]
-              },
-              {
-                "name": "Bolt Rifle",
-                "n_attacks": 2,
-                "b_skill": 3,
-                "strength": 4,
-                "ap": -1,
-                "damage": 1,
-                "damage_die": 0,
-                "abilities": ["ASSAULT","HEAVY"]
-              }  
-            ],
-            "keywords": ["Infantry","Grenades","Battleline","Imperium","Tacticus","Intercessor Squad"]
-        },
-        {
-            "name": "Intercessor Sergeant",
-            "toughness" : 4,
-            "a_save": 3,
-            "i_save": 10,
-            "wounds": 2,
-            "weapons": [
-              {
-                "name": "Bolt Pistol",
-                "n_attacks": 1,
-                "b_skill": 3,
-                "strength": 4,
-                "ap": 0,
-                "damage": 1,
-                "damage_die": 0,
-                "abilities": ["PISTOL"]
-              },
-              {
-                "name": "Bolt Rifle",
-                "n_attacks": 2,
-                "b_skill": 3,
-                "strength": 4,
-                "ap": -1,
-                "damage": 1,
-                "damage_die": 0,
-                "abilities": ["ASSAULT","HEAVY"]
-              }  
-            ],
-            "keywords": ["Infantry","Grenades","Battleline","Imperium","Tacticus","Intercessor Squad"]
-        }        
-    ]
+          ],
+          "keywords": ["Infantry","Grenades","Battleline","Imperium","Tacticus","Intercessor Squad"],
+          "count": 1
+      }        
+  ]
 }

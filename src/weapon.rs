@@ -2,6 +2,8 @@ use rand::Rng;
 
 use serde::{Deserialize, Serialize};
 
+use crate::model::Model;
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Ability {
     ANTI(String, u8),
@@ -54,6 +56,10 @@ impl Weapon {
         };
 
         self.damage + dmg_die
+    }
+
+    pub fn deal_damage(&self, damage: i32, model: &mut Model) {
+        model.take_damage(damage);
     }
 
     pub fn description(&self) -> String {
@@ -113,8 +119,9 @@ impl Weapon {
         (false, num)
     }
 
-    pub fn wound(&self, w_range: u8, keyswords: &Vec<String>) -> (bool, u8) {
+    pub fn wound(&self, w_range: u8, keyswords: &Vec<String>) -> (bool, u8, u8) {
         let mut num: u8 = 0;
+        let mut wound_val: u8 = 0;
         // let ability_hmap = HashMap::new();
         let infantry: String = "Infantry".to_string();
 
@@ -122,19 +129,21 @@ impl Weapon {
             let result: bool = match ability {
                 Ability::ANTI(s, range) if keyswords.contains(s) => {
                     num = rand::thread_rng().gen_range(1..7);
+                    wound_val = *range;
                     num >= *range
                 }
                 _ => {
                     num = rand::thread_rng().gen_range(1..7);
+                    wound_val = w_range;
                     num >= w_range
                 }
             };
 
             if result {
-                return (true, num);
+                return (true, num, wound_val);
             }
         }
-        (false, num)
+        (false, num, wound_val)
     }
 
     pub fn get_name(&self) -> &String {

@@ -58,24 +58,15 @@ impl Unit {
         &self.models
     }
 
-    pub fn get_unit_dummy(&self) -> Option<Model> {
-        let f_model = self.models.first();
-        match f_model {
-            Some(model) => {
-                let mut dummy = Model::new(
-                    model.get_name().to_string(),
-                    model.get_toughness(),
-                    model.get_a_save(),
-                    model.get_wounds(),
-                );
-                dummy.set_i_save(model.get_i_save());
-                dummy.add_keyword_vr(model.get_keywords());
-                Some(dummy)
-            }
-            None => {
-                println!("There are no more models");
-                None
-            }
-        }
+    pub fn get_models_mut(&mut self) -> &mut Vec<Model> {
+        &mut self.models
+    }
+
+    pub fn get_first_model(&self) -> Option<&Model> {
+        self.models.first()
+    }
+
+    pub fn get_first_model_mut(&mut self) -> Option<&mut Model> {
+        self.models.first_mut()
     }
 }

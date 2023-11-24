@@ -12,8 +12,6 @@ use unit::Unit;
 use serde::{Deserialize, Serialize};
 use serde_json::{from_str, to_string};
 
-include!(concat!(env!("OUT_DIR"), "/generated_units.rs"));
-
 #[derive(Serialize, Deserialize, Debug)]
 struct Dog {
     name: String,
@@ -54,33 +52,29 @@ fn deserialize() {
     }
 }
 
-
 fn main() {
-    let mut u_kaballite_warriors: Vec<Model> = drukhari_kabalite_warriors_json();
+    let all_units = UnitBuilder::new("models.json");
 
-    let mut u_intercessor_squad: Vec<Model> = intercessor_squad_json(8);
+    let mut u_kaballite_warriors: Vec<Model> = all_units.get_unit("kaballite_warriors".to_string());
 
-    // for model in &u_intercessor_squad {
-    //     println!("{}", model.description());
-    //     for weapon in model.get_weapon() {
-    //         println!("  {}", weapon.description());
-    //     }
-    // }
+    let mut u_intercessor_squad: Vec<Model> = all_units.get_unit("intercessor_squad".to_string());
 
     let mut u_kaballite_warriors_2: Unit = Unit::new(
         "Kabalite Warriors".to_string(),
-        drukhari_kabalite_warriors_json(),
+        u_kaballite_warriors,
         build_arsenal_from_json(),
     );
 
     let mut u_intercessor_squad_2 = Unit::new(
         "Intercessor Squad".to_string(),
-        intercessor_squad_json(6),
+        u_intercessor_squad,
         build_arsenal_from_json(),
     );
 
     u_kaballite_warriors_2.description();
     u_intercessor_squad_2.description();
+
+    grouped_combat(&u_kaballite_warriors_2, &mut u_intercessor_squad_2);
 
     //unit_combat(&u_kaballite_warriors_2, &u_intercessor_squad_2);
 

@@ -11,10 +11,11 @@ pub struct Model {
     wounds: i32,
     weapons: Vec<Weapon>,
     keywords: Vec<String>,
+    count: u8,
 }
 
 impl Model {
-    pub fn new(name: String, toughness: i32, a_save: i32, wounds: i32) -> Model {
+    pub fn new(name: String, toughness: i32, a_save: i32, wounds: i32, count: u8) -> Model {
         Model {
             name,
             toughness,
@@ -23,6 +24,7 @@ impl Model {
             weapons: vec![],
             i_save: 10,
             keywords: vec![],
+            count,
         }
     }
 
@@ -55,6 +57,9 @@ impl Model {
 
     pub fn take_damage(&mut self, damage: i32) {
         self.wounds -= damage;
+        if self.wounds <= 0 {
+            println!("{} has died", self.name);
+        }
     }
 
     pub fn set_i_save(&mut self, i_save: i32) {
@@ -97,4 +102,8 @@ impl Model {
     }
 
     pub fn get_model_dummy(&self) {}
+
+    pub fn get_count(&self) -> u8 {
+        self.count
+    }
 }

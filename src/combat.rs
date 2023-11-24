@@ -12,7 +12,7 @@ pub fn w_table(strenght: i32, tougness: i32) -> u8 {
     }
 }
 
-pub fn t_wound(strenght: i32, tougness: i32, weapon: &Weapon, keywords: &Vec<String>) -> (bool, u8) {
+pub fn t_wound(strenght: i32, tougness: i32, weapon: &Weapon, keywords: &Vec<String>) -> (bool, u8, u8) {
     let w_range: u8 = w_table(strenght, tougness);
     weapon.wound(w_range, keywords)
 }
@@ -47,16 +47,22 @@ pub fn perform_attack(
             a_hit.1,
             a_weapon.get_b_skill()
         );
-        let a_wound: (bool, u8) = t_wound(attacker_strength, toughness, a_weapon, defender_keywords);
+        let a_wound: (bool, u8, u8) = t_wound(attacker_strength, toughness, a_weapon, defender_keywords);
         if a_wound.0 {
-            println!("{} has wounded {} with (w_range) {} !", a_name, d_name, a_wound.1);
+            println!(
+                "{} has wounded {} with (roll/w_range) {}/{} !",
+                a_name, d_name, a_wound.1, a_wound.2
+            );
             if t_a_save(a_save, ap, i_save) {
                 println!("{} failes to save", d_name);
                 return true;
             }
             println!("{} saves", d_name);
         }
-        println!("{} failed to wound {}!", a_name, d_name);
+        println!(
+            "{} failed to wound {} with (roll/w_range {}/{})!",
+            a_name, d_name, a_wound.1, a_wound.2
+        );
     } else {
         println!(
             "{} has missed {} with {} (roll/bs) ({}/{})! ",
@@ -103,16 +109,68 @@ pub fn combat(attacker: &Model, defender: &mut Model) {
     }
 }
 
-pub fn unit_combat(attacker: &Unit, defender: &Unit) {
-    let mut attacker_models: &Vec<Model> = attacker.get_models();
-    let mut defender_dummy_model: Option<Model> = defender.get_unit_dummy();
+// pub fn unit_combat(attacker: &Unit, defender: &Unit) {
+//     let mut attacker_models: &Vec<Model> = attacker.get_models();
+//     let mut defender_dummy_model: Option<Model> = defender.get_first_model();
 
-    match defender_dummy_model {
-        Some(mut model) => {
-            for a_model in attacker_models {
-                combat(a_model, &mut model);
+//     match defender_dummy_model {
+//         Some(mut model) => {
+//             for a_model in attacker_models {
+//                 combat(a_model, &mut model);
+//             }
+//         }
+//         None => println!("There are no Units left"),
+//     }
+// }
+
+pub fn grouped_combat(attacker: &Unit, defender: &mut Unit) {
+    let mut attacker_models = attacker.get_models();
+    let defender_models = defender.get_models_mut();
+
+    // let result = defender.get_first_model();
+    // let mut defender_target =  match result {
+    //     Some(mut model)  => model,
+    //     None  =>{
+    //         println!("There are no more models in the unit ");
+    //         return
+    //     },
+    // };
+
+    if defender_models.is_empty() {
+        println!("There are no more models in the unit");
+        return;
+    }
+
+    let mut defender_target = &mut defender_models[0];
+
+    let mut total_hits = 0;
+    let mut total_wounds = 0;
+
+    for model in attacker_models {
+        let attacker_weapons = model.get_weapon();
+
+        for weapon in attacker_weapons {
+            let a_hit: (bool, i32) = weapon.hit();
+            if a_hit.0 {
+                total_hits += 1;
+                let defender_tougness: i32 = defender_target.get_toughness();
+                let attacker_strenght = weapon.get_strength();
+                let defender_keywords = defender_target.get_keywords();
+                let w_range = w_table(attacker_strenght, defender_tougness);
+                let a_wound = weapon.wound(w_range, defender_keywords);
+                if a_wound.0 {
+                    total_wounds += 1;
+                    let defender_a_save = defender_target.get_a_save();
+                    let attacker_ap = weapon.get_ap();
+                    let defender_i_save = defender_target.get_i_save();
+                    let a_save = t_a_save(defender_a_save, attacker_ap, defender_i_save);
+                    if !a_save {
+                        let damage = weapon.damage();
+                        //weapon.deal_damage(damage,defender_target);
+                        defender_target.take_damage(damage)
+                    }
+                }
             }
         }
-        None => println!("There are no Units left"),
     }
 }
