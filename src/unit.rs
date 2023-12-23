@@ -69,4 +69,8 @@ impl Unit {
     pub fn get_first_model_mut(&mut self) -> Option<&mut Model> {
         self.models.first_mut()
     }
+
+    pub fn remove_dead_models(&mut self) {
+        self.models.retain(|model| model.get_wounds() > 0);
+    }
 }

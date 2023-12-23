@@ -71,10 +71,14 @@ fn main() {
         build_arsenal_from_json(),
     );
 
-    u_kaballite_warriors_2.description();
-    u_intercessor_squad_2.description();
+    // u_kaballite_warriors_2.description();
+    // u_intercessor_squad_2.description();
 
-    grouped_combat(&u_kaballite_warriors_2, &mut u_intercessor_squad_2);
+    // grouped_combat(&u_kaballite_warriors_2, &mut u_intercessor_squad_2);
+
+    attack(&u_kaballite_warriors_2, &mut u_intercessor_squad_2);
+
+    u_intercessor_squad_2.description();
 
     //unit_combat(&u_kaballite_warriors_2, &u_intercessor_squad_2);
 

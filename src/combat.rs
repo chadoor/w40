@@ -1,21 +1,10 @@
-use crate::{model::Model, unit::Unit, weapon::Weapon};
+use crate::{
+    model::Model,
+    unit::Unit,
+    weapon::{self, Weapon},
+};
 use rand::Rng;
-
-pub fn w_table(strenght: i32, tougness: i32) -> u8 {
-    match (strenght, tougness) {
-        (s, t) if s >= t * 2 => 2,
-        (s, t) if s > t => 3,
-        (s, t) if s == t => 4,
-        (s, t) if s <= t => 5,
-        (s, t) if s * 2 <= t => 6,
-        _ => 0,
-    }
-}
-
-pub fn t_wound(strenght: i32, tougness: i32, weapon: &Weapon, keywords: &Vec<String>) -> (bool, u8, u8) {
-    let w_range: u8 = w_table(strenght, tougness);
-    weapon.wound(w_range, keywords)
-}
+use std::io::{self, Write};
 
 pub fn t_a_save(a_save: i32, ap: i32, i_save: i32) -> bool {
     if i_save <= a_save {
@@ -25,152 +14,130 @@ pub fn t_a_save(a_save: i32, ap: i32, i_save: i32) -> bool {
     }
 }
 
-pub fn perform_attack(
-    a_weapon: &Weapon,
-    attacker_strength: i32,
-    toughness: i32,
-    a_save: i32,
-    ap: i32,
-    i_save: i32,
-    a_name: &str,
-    d_name: &str,
-    a_w_name: &str,
-    defender_keywords: &Vec<String>,
-) -> bool {
-    let a_hit: (bool, i32) = a_weapon.hit();
-    if a_hit.0 {
-        println!(
-            "{} has hit {} with {} (roll/bs) ({}/{})!",
-            a_name,
-            d_name,
-            a_w_name,
-            a_hit.1,
-            a_weapon.get_b_skill()
-        );
-        let a_wound: (bool, u8, u8) = t_wound(attacker_strength, toughness, a_weapon, defender_keywords);
-        if a_wound.0 {
-            println!(
-                "{} has wounded {} with (roll/w_range) {}/{} !",
-                a_name, d_name, a_wound.1, a_wound.2
-            );
-            if t_a_save(a_save, ap, i_save) {
-                println!("{} failes to save", d_name);
-                return true;
-            }
-            println!("{} saves", d_name);
-        }
-        println!(
-            "{} failed to wound {} with (roll/w_range {}/{})!",
-            a_name, d_name, a_wound.1, a_wound.2
-        );
-    } else {
-        println!(
-            "{} has missed {} with {} (roll/bs) ({}/{})! ",
-            a_name,
-            d_name,
-            a_w_name,
-            a_hit.1,
-            a_weapon.get_b_skill()
-        );
-    }
-
-    false
-}
-
-pub fn combat(attacker: &Model, defender: &mut Model) {
-    let attacker_weapons: &Vec<Weapon> = attacker.get_weapon();
-    for attacker_weapon in attacker_weapons {
-        let attacker_strength: i32 = attacker_weapon.get_strength();
-        let attacker_ap: i32 = attacker_weapon.get_ap();
-        let attacker_name: &str = attacker.get_name();
-        let attacker_weapon_name: &str = attacker_weapon.get_name();
-        let defender_toughness: i32 = defender.get_toughness();
-        let defender_a_save: i32 = defender.get_a_save();
-        let defender_i_save: i32 = defender.get_i_save();
-        let defender_name: &str = defender.get_name();
-        let defender_keywords: &Vec<String> = defender.get_keywords();
-
-        if perform_attack(
-            &attacker_weapon,
-            attacker_strength,
-            defender_toughness,
-            defender_a_save,
-            attacker_ap,
-            defender_i_save,
-            attacker_name,
-            defender_name,
-            attacker_weapon_name,
-            defender_keywords,
-        ) {
-            let damage: i32 = attacker_weapon.damage();
-            defender.take_damage(damage);
-            println!("Defender {} has took {} damage", defender.get_name(), damage);
-        }
-    }
-}
-
-// pub fn unit_combat(attacker: &Unit, defender: &Unit) {
-//     let mut attacker_models: &Vec<Model> = attacker.get_models();
-//     let mut defender_dummy_model: Option<Model> = defender.get_first_model();
-
-//     match defender_dummy_model {
-//         Some(mut model) => {
-//             for a_model in attacker_models {
-//                 combat(a_model, &mut model);
-//             }
-//         }
-//         None => println!("There are no Units left"),
-//     }
-// }
-
-pub fn grouped_combat(attacker: &Unit, defender: &mut Unit) {
-    let mut attacker_models = attacker.get_models();
-    let defender_models = defender.get_models_mut();
-
-    // let result = defender.get_first_model();
-    // let mut defender_target =  match result {
-    //     Some(mut model)  => model,
-    //     None  =>{
-    //         println!("There are no more models in the unit ");
-    //         return
-    //     },
-    // };
-
-    if defender_models.is_empty() {
-        println!("There are no more models in the unit");
-        return;
-    }
-
-    let mut defender_target = &mut defender_models[0];
+pub fn attack(attacking_unit: &Unit, defending_unit: &mut Unit) {
+    attacking_unit.description();
+    let models = attacking_unit.get_models();
 
     let mut total_hits = 0;
-    let mut total_wounds = 0;
+    let mut total_successful_hits = 0;
+    let mut total_successful_wounds = 0;
+    let mut total_damage = 0;
+    let mut wounding_weapons: Vec<&Weapon> = Vec::new();
 
-    for model in attacker_models {
-        let attacker_weapons = model.get_weapon();
+    let result = defending_unit.get_first_model();
+    let defender_model = match result {
+        Some(model) => model,
+        None => {
+            println!("No models in the defending unit");
+            return;
+        }
+    };
+    let defender_tougness = defender_model.get_toughness() as u8;
+    let defender_keywords = defender_model.get_keywords();
 
-        for weapon in attacker_weapons {
-            let a_hit: (bool, i32) = weapon.hit();
-            if a_hit.0 {
-                total_hits += 1;
-                let defender_tougness: i32 = defender_target.get_toughness();
-                let attacker_strenght = weapon.get_strength();
-                let defender_keywords = defender_target.get_keywords();
-                let w_range = w_table(attacker_strenght, defender_tougness);
-                let a_wound = weapon.wound(w_range, defender_keywords);
-                if a_wound.0 {
-                    total_wounds += 1;
-                    let defender_a_save = defender_target.get_a_save();
-                    let attacker_ap = weapon.get_ap();
-                    let defender_i_save = defender_target.get_i_save();
-                    let a_save = t_a_save(defender_a_save, attacker_ap, defender_i_save);
-                    if !a_save {
-                        let damage = weapon.damage();
-                        //weapon.deal_damage(damage,defender_target);
-                        defender_target.take_damage(damage)
+    for model in models {
+        let weapons = model.get_weapon();
+        for weapon in weapons {
+            total_hits += weapon.get_n_attacks();
+            let successful_hits = std::iter::repeat_with(|| weapon.hit())
+                .take(weapon.get_n_attacks() as usize)
+                .filter(|hit_result| hit_result.0)
+                .count() as i32;
+            total_successful_hits += successful_hits;
+
+            let wound_results = std::iter::repeat_with(|| weapon.wound(defender_tougness, defender_keywords))
+                .take(successful_hits as usize)
+                .filter_map(|(is_wound, _, _)| {
+                    if is_wound {
+                        // Map successful wounds to their damage values
+                        wounding_weapons.push(weapon);
+                        Some(weapon.damage())
+                    } else {
+                        None
                     }
-                }
-            }
+                });
+
+            // Collect the damage values into a Vector and sum them up
+            let damage_values: Vec<i32> = wound_results.collect();
+            let wounds_damage: i32 = damage_values.iter().sum();
+
+            total_successful_wounds += damage_values.len() as i32;
+            total_damage += wounds_damage;
         }
     }
+
+    println!("Total attacks: {}", total_hits);
+    println!("Successful hits: {}", total_successful_hits);
+    println!("Successful wounds: {}", total_successful_wounds);
+    println!("Total damage: {}", total_damage);
+
+    for i in 0..total_successful_wounds {
+        println!("Alocate {} of wounds", total_successful_wounds - i);
+
+        let defender_model = select_defender(defending_unit);
+        let defender_armor_save = defender_model.get_a_save();
+        let defender_i_save = defender_model.get_i_save();
+
+        // Assuming each successful wound is independent and should be resolved separately
+        let weapon = wounding_weapons[i as usize];
+        let weapon_ap = weapon.get_ap();
+
+        if t_a_save(defender_armor_save, weapon_ap, defender_i_save) {
+            println!(
+                "{} failed to save against {}'s attack",
+                defender_model.get_name(),
+                weapon.get_name()
+            );
+            let damage = weapon.damage();
+            defender_model.take_damage(damage);
+            println!("{} has took {} damage", defender_model.get_name(), damage);
+        } else {
+            println!(
+                "{} saved against {}'s attack",
+                defender_model.get_name(),
+                weapon.get_name()
+            );
+        }
+    }
+
+    defending_unit.remove_dead_models();
+}
+
+pub fn select_defender(unit: &mut Unit) -> &mut Model {
+    // Display the unit description and list of models with indexes
+    // unit.description();
+    for (index, model) in unit.get_models().iter().enumerate() {
+        println!(
+            "{}: {} ({} wounds remaining)",
+            index,
+            model.get_name(),
+            model.get_wounds()
+        );
+    }
+
+    // Prompt the user to select a model
+    println!("Enter the index of the model to allocate wounds:");
+    let mut selected_index = String::new();
+    io::stdout().flush().unwrap(); // Make sure the prompt is printed before reading input
+    io::stdin().read_line(&mut selected_index).expect("Failed to read line");
+    let selected_index: usize = selected_index.trim().parse().expect("Please type a number!");
+
+    // Validate the selected index
+    if selected_index >= unit.get_models().len() {
+        println!("Invalid index, please select a correct model index.");
+        panic!();
+    }
+
+    // For now, just print out which model is selected and the wounds to allocate
+    let mut selected_model = &unit.get_models_mut()[selected_index];
+
+    let armor_save = selected_model.get_a_save();
+    let i_save = selected_model.get_i_save();
+
+    &mut unit.get_models_mut()[selected_index]
+
+    // Here you would add logic to apply wounds to the selected model
+    // This might involve modifying the 'Unit' structure to allow for mutable access to models
+    // For example, if you had a method like 'apply_wounds_to_model(index: usize, wounds: i32)'
+    // you would call it here
 }
