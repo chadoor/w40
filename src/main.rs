@@ -53,7 +53,7 @@ fn deserialize() {
 }
 
 fn main() {
-    let all_units = UnitBuilder::new("models.json");
+    let all_units = UnitBuilder::new("all_models.json");
 
     let mut u_kaballite_warriors: Vec<Model> = all_units.get_unit("kaballite_warriors".to_string());
 
@@ -62,13 +62,13 @@ fn main() {
     let mut u_kaballite_warriors_2: Unit = Unit::new(
         "Kabalite Warriors".to_string(),
         u_kaballite_warriors,
-        build_arsenal_from_json(),
+        build_arsenal_from_json("druchari_wedruchari_weapons.jsonapons.json"),
     );
 
     let mut u_intercessor_squad_2 = Unit::new(
         "Intercessor Squad".to_string(),
         u_intercessor_squad,
-        build_arsenal_from_json(),
+        build_arsenal_from_json("druchari_weapons.json"),
     );
 
     // u_kaballite_warriors_2.description();

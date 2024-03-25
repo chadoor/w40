@@ -4,11 +4,11 @@ use std::collections::HashMap;
 pub struct Unit {
     name: String,
     models: Vec<Model>,
-    arsenal: Vec<Weapon>,
+    arsenal: HashMap<String, Vec<Weapon>>,
 }
 
 impl Unit {
-    pub fn new(name: String, models: Vec<Model>, arsenal: Vec<Weapon>) -> Unit {
+    pub fn new(name: String, models: Vec<Model>, arsenal: HashMap<String, Vec<Weapon>>) -> Unit {
         Unit { name, models, arsenal }
     }
 

@@ -1,0 +1,21 @@
+{
+    "kaballite_warriors": {
+        "unit_stats": [
+            {
+                "movement": 8,
+                "toughness": 3,
+                "armor_save": 4,
+                "wounds": 1,
+                "leadership": 6,
+                "objective_control": 2
+            }
+        ],
+        "weapons" : [
+            "Blast Pistol",
+            "Blaster",
+            "Dark Lance",
+            "Splinter rifle"
+        ]
+
+    }
+}

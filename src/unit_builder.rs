@@ -5,9 +5,27 @@ use crate::model::*;
 use crate::weapon::Weapon;
 use std::fs;
 
+// Helper function to check the file path
+fn check_file_path<'a>(file_path: &'a str, expected_suffix: &str) -> Option<&'a str> {
+    if file_path.ends_with(format!("{}.json", expected_suffix).as_str()) {
+        Some(file_path)
+    } else {
+        None
+    }
+}
+
 fn read_json_model_file(file_path: &str) -> HashMap<String, Vec<Model>> {
+    let _check_file_path = check_file_path(file_path, "models").expect("File path does not end with '_models.json'");
+
     let data = fs::read_to_string(file_path).expect("Unable to read file");
     serde_json::from_str(&data).expect("JSON was not well-formatted")
+}
+
+pub fn build_arsenal_from_json(file_path: &str) -> HashMap<String, Vec<Weapon>> {
+    let _check_file_path = check_file_path(file_path, "weapons").expect("File path does not end with '_weapons.json'");
+
+    let data = fs::read_to_string(file_path).expect("Failed to read file");
+    serde_json::from_str(&data).expect("Failed to parse json")
 }
 
 pub struct UnitBuilder {
@@ -41,14 +59,4 @@ impl UnitBuilder {
 
         unit
     }
-}
-
-pub fn build_arsenal_from_json() -> Vec<Weapon> {
-    let file = "weapons.json";
-    let json_string = fs::read_to_string(file).expect("Failed to read file");
-
-    let weapons: Vec<Weapon> = serde_json::from_str(&json_string).expect("Failed to parse json");
-
-    // println!("{:#?}", weapons);
-    weapons
 }
