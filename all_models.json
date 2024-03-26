@@ -10,8 +10,9 @@
           "weapons": [
             {
               "name": "Splinter rifle",
+              "range": 24,
               "n_attacks": 2,
-              "b_skill": 3,
+              "w_skill": 3,
               "strength": 2,
               "ap": 0,
               "damage": 1,
@@ -31,8 +32,9 @@
           "weapons": [
             {
               "name": "Splinter rifle",
+              "range": 24,
               "n_attacks": 2,
-              "b_skill": 3,
+              "w_skill": 3,
               "strength": 2,
               "ap": 0,
               "damage": 1,
@@ -55,8 +57,9 @@
           "weapons": [
             {
               "name": "Bolt Pistol",
+              "range": 12,
               "n_attacks": 1,
-              "b_skill": 3,
+              "w_skill": 3,
               "strength": 4,
               "ap": 0,
               "damage": 1,
@@ -66,7 +69,8 @@
             {
               "name": "Bolt Rifle",
               "n_attacks": 2,
-              "b_skill": 3,
+              "range": 24,
+              "w_skill": 3,
               "strength": 4,
               "ap": -1,
               "damage": 1,
@@ -87,7 +91,8 @@
             {
               "name": "Bolt Pistol",
               "n_attacks": 1,
-              "b_skill": 3,
+              "range": 12,
+              "w_skill": 3,
               "strength": 4,
               "ap": 0,
               "damage": 1,
@@ -97,7 +102,8 @@
             {
               "name": "Bolt Rifle",
               "n_attacks": 2,
-              "b_skill": 3,
+              "range": 24,
+              "w_skill": 3,
               "strength": 4,
               "ap": -1,
               "damage": 1,

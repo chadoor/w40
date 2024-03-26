@@ -27,8 +27,9 @@ pub enum Ability {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Weapon {
     name: String,
+    range: i32,
     n_attacks: i32,
-    b_skill: i32,
+    w_skill: i32,
     strength: i32,
     ap: i32,
     damage: i32,
@@ -39,8 +40,9 @@ pub struct Weapon {
 impl Weapon {
     pub fn new(
         name: String,
+        range: i32,
         n_attacks: i32,
-        b_skill: i32,
+        w_skill: i32,
         strength: i32,
         ap: i32,
         damage: i32,
@@ -49,8 +51,9 @@ impl Weapon {
     ) -> Weapon {
         Weapon {
             name,
+            range,
             n_attacks,
-            b_skill,
+            w_skill,
             strength,
             ap,
             damage,
@@ -95,7 +98,7 @@ impl Weapon {
                 self.name,
                 abilities_str,
                 self.n_attacks,
-                self.b_skill,
+                self.w_skill,
                 self.strength,
                 self.ap,
                 self.damage,
@@ -104,7 +107,7 @@ impl Weapon {
         } else {
             format!(
                 "{}[{}], A: {}, BS: {}+, S: {}, AP: {}, Damage: {}",
-                self.name, abilities_str, self.n_attacks, self.b_skill, self.strength, self.ap, self.damage
+                self.name, abilities_str, self.n_attacks, self.w_skill, self.strength, self.ap, self.damage
             )
         }
     }
@@ -130,15 +133,15 @@ impl Weapon {
             return (true, num);
         }
 
-        // Standard check against b_skill
-        (num >= self.b_skill, num)
+        // Standard check against w_skill
+        (num >= self.w_skill, num)
     }
 
     pub fn wound(&self, d_tougness: u8, keyswords: &Vec<String>) -> (bool, u8, u8) {
-        let w_range = w_table(self.strength as u8, d_tougness);
+        let range = w_table(self.strength as u8, d_tougness);
 
         let num = rand::thread_rng().gen_range(1..7);
-        let mut w_val = w_range;
+        let mut w_val = range;
 
         for ability in &self.abilities {
             match ability {
@@ -166,8 +169,8 @@ impl Weapon {
         self.n_attacks
     }
 
-    pub fn get_b_skill(&self) -> i32 {
-        self.b_skill
+    pub fn get_w_skill(&self) -> i32 {
+        self.w_skill
     }
 
     pub fn get_strength(&self) -> i32 {

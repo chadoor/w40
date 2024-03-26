@@ -2,8 +2,9 @@
     "ranged_weapons": [
         {
             "name": "blast_pistol",
+            "range": 6,
             "n_attacks": 1,
-            "b_skill": 3,
+            "w_skill": 3,
             "strength": 8,
             "ap": -3,
             "damage": 0,
@@ -12,8 +13,9 @@
         },
         {
             "name": "blaster",
+            "range": 18,
             "n_attacks": 1,
-            "b_skill": 3,
+            "w_skill": 3,
             "strength": 8,
             "ap": -4,
             "damage": 1,
@@ -22,8 +24,9 @@
         },
         {
             "name": "dark_lance",
+            "range": 36,
             "n_attacks": 1,
-            "b_skill": 4,
+            "w_skill": 4,
             "strength": 12,
             "ap": -3,
             "damage": 2,
@@ -32,13 +35,27 @@
         },
         {
             "name": "splinter_rifle",
+            "range": 24,
             "n_attacks": 2,
-            "b_skill": 3,
+            "w_skill": 3,
             "strength": 2,
             "ap": 0,
             "damage": 1,
             "damage_die": 0,
             "abilities": ["ASSAULT", {"ANTI":["Infantry",3]}]
+        }
+    ],
+    "melee_weapons": [
+        {
+            "name": "ccw",
+            "range": 0,
+            "n_attacks": 2,
+            "w_skill": 3,
+            "strength": 3,
+            "ap": 0,
+            "damage": 1,
+            "damage_die": 0,
+            "abilities": []
         }
     ]
 }

@@ -62,23 +62,23 @@ fn main() {
     let mut u_kaballite_warriors_2: Unit = Unit::new(
         "Kabalite Warriors".to_string(),
         u_kaballite_warriors,
-        build_arsenal_from_json("druchari_wedruchari_weapons.jsonapons.json"),
-    );
-
-    let mut u_intercessor_squad_2 = Unit::new(
-        "Intercessor Squad".to_string(),
-        u_intercessor_squad,
         build_arsenal_from_json("druchari_weapons.json"),
     );
+
+    // let mut u_intercessor_squad_2 = Unit::new(
+    //     "Intercessor Squad".to_string(),
+    //     u_intercessor_squad,
+    //     build_arsenal_from_json("druchari_weapons.json"),
+    // );
 
     // u_kaballite_warriors_2.description();
     // u_intercessor_squad_2.description();
 
     // grouped_combat(&u_kaballite_warriors_2, &mut u_intercessor_squad_2);
 
-    attack(&u_kaballite_warriors_2, &mut u_intercessor_squad_2);
+    // attack(&u_kaballite_warriors_2, &mut u_intercessor_squad_2);
 
-    u_intercessor_squad_2.description();
+    // u_intercessor_squad_2.description();
 
     //unit_combat(&u_kaballite_warriors_2, &u_intercessor_squad_2);
 
