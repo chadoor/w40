@@ -1,6 +1,9 @@
 use crate::weapon::*;
+use std::vec;
+use serde::{Deserialize, Serialize};
 
-struct Stats{
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct Stats{
     movement: u8,
     toughness: u8,
     armor_save: u8,
@@ -10,7 +13,8 @@ struct Stats{
     invulnerable_save: u8
 }
 
-struct meta_unit{
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct MetaUnit{
     unit_stats: Stats,
     ranged_weapons: Vec<String>,
     melee_weapons: Vec<String>,
@@ -19,11 +23,12 @@ struct meta_unit{
     abilities: Vec<String>,
     faction_abilities: String,
     core_abilities: Vec<String>,
-    unit_composition: (String,u8),
+    unit_composition: Vec<(String,u8)>,
     weapon_composition: Vec<String>
 }
 
-pub struct n_unit{
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct UnitProfile{
     name: String,
     unit_stats: Stats,
     weapons: Vec<Weapon>,
@@ -32,6 +37,12 @@ pub struct n_unit{
     models: u8
 }
 
+
+impl UnitProfile {
+    pub fn get_meta_unit_vec() -> Vec<MetaUnit>{
+        vec![]
+    }
+}
 
 /*
  "kaballite_warriors": {

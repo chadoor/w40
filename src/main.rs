@@ -1,5 +1,6 @@
 mod combat;
 mod model;
+mod n_unit;
 mod unit;
 mod unit_builder;
 mod weapon;
@@ -53,17 +54,19 @@ fn deserialize() {
 }
 
 fn main() {
-    let all_units = UnitBuilder::new("all_models.json");
+    let all_units = UnitBuilder::new("units.json");
+    all_units.print_units();
+    // let all_units = UnitBuilder::new("all_models.json");
 
-    let mut u_kaballite_warriors: Vec<Model> = all_units.get_unit("kaballite_warriors".to_string());
+    // let mut u_kaballite_warriors: Vec<Model> = all_units.get_unit("kaballite_warriors".to_string());
 
-    let mut u_intercessor_squad: Vec<Model> = all_units.get_unit("intercessor_squad".to_string());
+    // let mut u_intercessor_squad: Vec<Model> = all_units.get_unit("intercessor_squad".to_string());
 
-    let mut u_kaballite_warriors_2: Unit = Unit::new(
-        "Kabalite Warriors".to_string(),
-        u_kaballite_warriors,
-        build_arsenal_from_json("druchari_weapons.json"),
-    );
+    // let mut u_kaballite_warriors_2: Unit = Unit::new(
+    //     "Kabalite Warriors".to_string(),
+    //     u_kaballite_warriors,
+    //     build_arsenal_from_json("druchari_weapons.json"),
+    // );
 
     // let mut u_intercessor_squad_2 = Unit::new(
     //     "Intercessor Squad".to_string(),

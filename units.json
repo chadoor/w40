@@ -1,6 +1,7 @@
 {
-    "kaballite_warriors": {
-        "unit_stats": [
+    "kaballite_warriors": [
+        {
+            "unit_stats": 
             {
                 "movement": 8,
                 "toughness": 3,
@@ -10,22 +11,25 @@
                 "objective_control": 2,
                 "invulnerable_save": 6
             }
-        ],
-        "ranged_weapons": [
-            "Blast Pistol",
-            "Blaster",
-            "Dark Lance",
-            "Splinter rifle"
-        ],
-        "melee_weapons": [
-            "ccw"
-        ],
-        "keywords": ["infantry,kabal,battleline,aeldari,kaballite_warriors"],
-        "faction_keywords": "drukhari",
-        "abilities": ["SADISTIC_RAIDERS"],
-        "faction_abilities": "POWER_FROM_PAIN",
-        "core_abilities": [],
-        "unit_composition": [{"Sybarite":1},{"Kaballite_Warrior":9}],
-        "weapon_composition": ["splinter_rifle","ccw"]
-    }
+            ,
+            "ranged_weapons": [
+                "Blast Pistol",
+                "Blaster",
+                "Dark Lance",
+                "Splinter rifle"
+            ],
+            "melee_weapons": [
+                "ccw"
+            ],
+            "keywords": ["infantry,kabal,battleline,aeldari,kaballite_warriors"],
+            "faction_keywords": "drukhari",
+            "abilities": ["SADISTIC_RAIDERS"],
+            "faction_abilities": "POWER_FROM_PAIN",
+            "core_abilities": [],
+            "unit_composition": [["Sybarite", 1], ["Kaballite_Warrior", 9]],
+            "weapon_composition": ["splinter_rifle","ccw"]
+
+        }
+        ]
+    
 }
